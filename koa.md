@@ -26,12 +26,111 @@
 	--> 使用详情: npm --help
   
 ### 2. Koa入门
+	1) koa之前，以express为主的代码：
+	
+	   var express = require('express')
+	   var app = express()
+	   app.use(function(req, res, next){
+	   	res.send('Hello World')
+	   })
+	   app.listen(3000)
+	   
+	2) koa时代的代码：
+	
+	   =>koa1.x....
+	   var koa = require('koa')
+	   var app = koa()
+	   app.use(fucntion *(){
+	   	this.body = 'Hello World'
+	   })
+	   app.listen(3000)
+	   
+	   =>koa2.x....
+	   const koa = require('koa')
+	   const app = new koa()
+	   app.use(ctx => {
+	   	ctx.body = 'Hello World'
+	   })
+	   app.listen(3000)
+	   
+	3) 概念部分；主要以koajs源码https://github.com/koajs/koa为基础讲解
+	   ****这里要有图片
 ### 3.ES6 && ES7
-### 4. 调试和测试
+	可以阅读阮一峰的blog
+### 4. 调试和测试：ava测试
+	*** 这里主要以桑大自己的blog为大纲；https://github.com/i5ting/ava-practice
+	1）ava安装
+		npm install ava	
+	2）使用
+	=>代码, index.test.js
+	   'use strict'	
+	    import test from 'ava'
+	    test('my test', t => {
+	    	t.is(3, 3)
+	    })
+	=>执行测试
+	  ava -v index.test.js
+	  
+	  ✔ my test
+	  1 test passed [21:51:19]
+	  
+	3) 当然关于ava还有很多好玩儿的，请上：
+	   https://github.com/i5ting/ava-practice
+	   https://github.com/avajs/ava
+	    
 ## 第一天下午：6月19日 13：00 -19：30
 ### 5. Http with Koa
-### 6. Koa核心
+	*** 主要以get系和post系为线索；
+	1）get:
+		=> xx/:id     	//获取：ctx.parmas(ctx.request.parmas)
+		=> xx/?id=123  	//获取：ctx.parmas(ctx.request.query)
+	2）post：请安装中间件koa-bodyparse  
+		获取：ctx.body()
+	3) file： 文件上传请安装中间件koa-multer
+		使用：
+		const multer = require('koa-multer')
+		const upload = multer({dest: 'uploads/'})
+		router.post('/file', upload.array('avatar'), function (ctx, next) {})
+	
+	4）postman：chrome浏览器中模拟发送http请求的插件
+	5）curl：是一种命令行工具，作用是发出网络请求，然后得到和提取数据，显示在"标准输出"（stdout）上面。
+	6）superkoa:桑大自己写的测试工具（koa with supertest for ava or mocha：https://www.npmjs.com/package/superkoa）
+
+### 6. Koa核心：middleware
+	1）“洋葱”模型
+	2）koa三种实现方式：
+		①Common：
+			app.use((ctx, next) => {
+				const start = new Date()
+				return next().then(() => {
+					const ms = new Date() - start
+					console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+				});
+			});
+			
+		②Gernerator:
+			const co = require('co')
+			app.use(co.wrap(fucntion * (ctx, next){
+				const start = new Date()
+				yeild next()
+				const ms = new Date() - start
+				console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+			}))
+		③Async(Babel required,在执行时runkoa app.js)
+			app.use(async (ctx, next)=>{
+				const start = new Date()
+				await next()
+				const ms = new Date() - start
+				console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+			})
+			
+		*** runkoa的使用：https://www.npmjs.com/package/runkoa
+			
 ### 7. 异步流程控制
+	1)Thunk
+	2)Promise
+	3)Generator
+	4)Async
 ### 8. 数据库
 ### 9. 课后作业
 ## 第二天上午：6月25日  9：00 -12：00
