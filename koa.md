@@ -1,8 +1,8 @@
 >1）Koajs是被寄予厚望的下一代Nodejs网络服务框架，它正在因为优雅，简洁和卓越的性能赢得nodejs开发者的青睐；
-2）用时两天时间，[桑大](https://cnodejs.org/user/i5ting)首秀，带领大家快速上手koajs框架，包括讲，连，答疑。
+2）用时两天时间，[桑大](https://cnodejs.org/user/i5ting)在线下首秀，带领大家快速上手koajs框架
 
 ![0_1467251262722_2.pic.jpg](//qn-rockq1.rockq.org/Fk55NcUK_ydgpWiQ-EUmLIW-tpnJ)
-![0_1467251276360_4.pic_hd.jpg](//qn-rockq1.rockq.org/FrCnhavTnJU1ryFIzx449jVnlmsm)
+
 * 列表两天时间非常的充实，下面就一两天的时间为线索回顾和温习这次精彩而又充实的研讨课；
 # 日程
 ## 第一天上午：6月19日 9：00 -12：00
@@ -132,10 +132,79 @@
 	3)Generator
 	4)Async
 ### 8. 数据库
+	1)mongodb：https://www.mongodb.com/
+	2)node中mongose的使用：
+		①=>
+		var mongoose = require('mongoose');
+		mongoose.connect('mongodb://localhost/test');
+
+		var Cat = mongoose.model('Cat', { name: String });
+
+		var kitty = new Cat({ name: 'Zildjian' });
+		kitty.save(function (err) {
+  		if (err) {
+    		console.log(err);
+  		} else {
+    	console.log('meow');
+  		}
+		});
+		
+		②koa中有个koa-mongose的模块：https://www.npmjs.com/package/koa-mongoose
+		
+		var app = require('koa')()
+		var mongoose = require('koa-mongoose')
+		var User = require('./models/user')
+ 
+		app.use(mongoose({
+	    mongoose: require('mongoose-q')(),//custom mongoose 
+    	user: '',
+	    pass: '',
+    	host: '127.0.0.1',
+	    port: 27017,
+    	database: 'test',
+	    db: {
+    	    native_parser: true
+	    },
+    	server: {
+        	poolSize: 5
+	    }
+		}))
+ 
+		app.use(function* (next) {
+	    var user = new User({
+    	    account: 'test',
+        	password: 'test'
+	    })
+    	yield user.saveQ()
+	    this.body = 'OK'
+		})		
+		
 ### 9. 课后作业
+	1）使用koa和mongodb完成用户的登陆，注册；
+		*可以参考：https://github.com/moajs/moa
+		
 ## 第二天上午：6月25日  9：00 -12：00
-### 10. 项目实战
+### 10. 项目实战:
+	1）以https://github.com/moajs/moa2为基础，从工程结构，文件目录，源码分析了使用koa2开发web项目的方方面面；
+	2）从package.json开始，对每一行作分析；
+	
+
 ### 11. “丰衣足食”--npm模块
+	1）编写，测试模块代码；
+	2）使用github管理
+	3）发布到npm上
+	4) 拓展了到了写一个开源项目需要的流程(真是良心讲师啊O(∩_∩)O哈哈~)
 ## 第二天下午：6月19日 13：00 -19：30
 ### 12. koa实战(从0开始写一个基于koa的web框架)
-### 13. 最佳时间
+	** 以https://github.com/i5ting/moag为例，开发一个脚手架为例
+	1）编写一个脚手架所需一般知识：都有对应的模块，当然可以自己再造轮子
+	目录的创建：https://github.com/substack/node-mkdirp
+	文件的读写：https://github.com/i5ting/dirw
+	时间的利用：https://github.com/moment/moment
+	单词的处理：https://github.com/martinandert/inflected
+	模板 引擎： https://github.com/i5ting/tpl_apply
+### 13. 最佳实践
+	1）具备上面的12的脚手架知识，就可以来个最佳实践了，开始动手写吧；可以参考https://github.com/i5ting/moag
+:ballot_box_with_check: 以上就简单粗略的总结下koa研讨课总结，有很多都没有写出来，当然最佳效果是现场；如果感兴趣，可以关注rockq社区[网站](https://rockq.org)或者公众号，后续还有这样的研讨课；
+
+附件：![0_1467684631308_FnJNdS6_jNyKfQD_t4cx4-4fk5QW.jpeg](//qn-rockq1.rockq.org/FnJNdS6_jNyKfQD_t4cx4-4fk5QW) 
